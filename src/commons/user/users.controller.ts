@@ -15,7 +15,6 @@ import { Auth } from 'src/commons/decorators/auth.decorator';
 import { PagePipe } from 'src/commons/pipes/PagePipe';
 import { PerPagePipe } from 'src/commons/pipes/PerPagePipe';
 
-@Auth()
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -25,6 +24,7 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @Auth()
   @Get()
   findAll(
     @Query('page', PagePipe) page: number,
@@ -39,6 +39,7 @@ export class UsersController {
     });
   }
 
+  @Auth()
   @Get(':id')
   findByID(
     @Param('id', ParseIntPipe)
@@ -54,6 +55,7 @@ export class UsersController {
     });
   }
 
+  @Auth()
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,

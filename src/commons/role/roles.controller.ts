@@ -1,10 +1,28 @@
-import { Controller, Get, Body, Patch, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Body,
+  Patch,
+  Param,
+  Post,
+  BadRequestException,
+} from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { UpdateRoleDto } from './dto/update-role.dto';
+import { CreateRoleDto } from './dto/create-role.dto';
 
 @Controller('roles')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
+
+  @Post()
+  create(@Body() createRoleDto: CreateRoleDto) {
+    try {
+      return this.rolesService.create(createRoleDto);
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
 
   @Get()
   find() {

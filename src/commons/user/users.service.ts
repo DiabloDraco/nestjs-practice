@@ -15,10 +15,8 @@ export class UsersService {
   async create(createUserDto: CreateUserDto) {
     try {
       createUserDto.password = await this.hashPassword(createUserDto.password);
-
-      return await this.usersRepository.save(
-        this.usersRepository.create(createUserDto),
-      );
+      let user = this.usersRepository.create(createUserDto);
+      return await this.usersRepository.save(user);
     } catch (error) {
       throw new BadRequestException();
     }
@@ -114,7 +112,6 @@ export class UsersService {
     const [{ result }] = await this.usersRepository.query(
       `select HASH_MAKE('${password}') as result`,
     );
-
     return result;
   }
 }

@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from './entities/role.entity';
 import { Repository } from 'typeorm';
 import { Auth } from 'src/commons/decorators/auth.decorator';
+import { CreateRoleDto } from './dto/create-role.dto';
 
 @Auth()
 @Injectable()
@@ -12,6 +13,16 @@ export class RolesService {
     @InjectRepository(Role)
     private roleRepository: Repository<Role>,
   ) {}
+
+  async create(createRoleDto: CreateRoleDto) {
+    try {
+      return await this.roleRepository.save(
+        this.roleRepository.create(createRoleDto),
+      );
+    } catch (error) {
+      throw new BadRequestException();
+    }
+  }
 
   find() {
     return this.roleRepository.find();
